@@ -8,26 +8,24 @@ export const PeliculasProvider = ({ children }) => {
   const [favoritos, setFavoritos] = useState([]);
   const [peliculaEnEdicion, setPeliculaEnEdicion] = useState(null);
 
-  // Cargar películas del localStorage
   useEffect(() => {
     const peliculasGuardadas = obtenerPeliculasLS();
     setPeliculas(peliculasGuardadas);
   }, []);
 
-  // Guardar películas en el localStorage cada vez que cambian
+
   useEffect(() => {
     if (peliculas.length > 0) {
       guardarPeliculasLS(peliculas);
-      setFavoritos(peliculas.filter((p) => p.favorito));  // Sincroniza los favoritos
+      setFavoritos(peliculas.filter((p) => p.favorito));  
     }
   }, [peliculas]);
 
-  // Agregar una nueva película
+
   const agregarPelicula = (pelicula) => {
     setPeliculas((prevPeliculas) => [...prevPeliculas, pelicula]);
   };
 
-  // Eliminar una película por ID
   const eliminarPelicula = (id) => {
     setPeliculas((prevPeliculas) => prevPeliculas.filter((peli) => peli.id !== id));
   };
@@ -41,14 +39,13 @@ export const PeliculasProvider = ({ children }) => {
     );
   };
 
-  // Editar una película existente
   const editarPelicula = (peliculaActualizada) => {
     setPeliculas((prevPeliculas) =>
       prevPeliculas.map((peli) =>
         peli.id === peliculaActualizada.id ? peliculaActualizada : peli
       )
     );
-    setPeliculaEnEdicion(null);  // Limpiar el estado de edición
+    setPeliculaEnEdicion(null); 
   };
 
   return (
