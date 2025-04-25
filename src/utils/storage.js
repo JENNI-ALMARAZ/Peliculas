@@ -1,4 +1,5 @@
-// src/utils/storage.js
+
+
 export const obtenerPeliculasLS = () => {
   const data = localStorage.getItem("peliculas");
   return data ? JSON.parse(data) : [];
