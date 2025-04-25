@@ -14,7 +14,7 @@ const App = () => {
       <div className="min-h-screen bg-gray-100 py-8 px-4 md:px-10">
         <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
           <h1 className="text-3xl font-bold text-center text-blue-700 mb-6">
-            🎬 Gestor de Películas
+            🎬 Películas
           </h1>
 
           <Filtros filtro={filtro} setFiltro={setFiltro} />
