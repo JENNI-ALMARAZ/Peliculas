@@ -8,38 +8,47 @@ export const PeliculasProvider = ({ children }) => {
   const [favoritos, setFavoritos] = useState([]);
   const [peliculaEnEdicion, setPeliculaEnEdicion] = useState(null);
 
+  // Cargar películas del localStorage
   useEffect(() => {
     const peliculasGuardadas = obtenerPeliculasLS();
     setPeliculas(peliculasGuardadas);
-    setFavoritos(peliculasGuardadas.filter((p) => p.favorito));
   }, []);
 
+  // Guardar películas en el localStorage cada vez que cambian
   useEffect(() => {
-    guardarPeliculasLS(peliculas);
-    setFavoritos(peliculas.filter((p) => p.favorito));
+    if (peliculas.length > 0) {
+      guardarPeliculasLS(peliculas);
+      setFavoritos(peliculas.filter((p) => p.favorito));  // Sincroniza los favoritos
+    }
   }, [peliculas]);
 
+  // Agregar una nueva película
   const agregarPelicula = (pelicula) => {
-    setPeliculas([...peliculas, pelicula]);
+    setPeliculas((prevPeliculas) => [...prevPeliculas, pelicula]);
   };
 
+  // Eliminar una película por ID
   const eliminarPelicula = (id) => {
-    setPeliculas(peliculas.filter((peli) => peli.id !== id));
+    setPeliculas((prevPeliculas) => prevPeliculas.filter((peli) => peli.id !== id));
   };
 
+  // Alternar el estado de favorito de una película
   const toggleFavorito = (id) => {
-    const actualizadas = peliculas.map((peli) =>
-      peli.id === id ? { ...peli, favorito: !peli.favorito } : peli
+    setPeliculas((prevPeliculas) =>
+      prevPeliculas.map((peli) =>
+        peli.id === id ? { ...peli, favorito: !peli.favorito } : peli
+      )
     );
-    setPeliculas(actualizadas);
   };
 
+  // Editar una película existente
   const editarPelicula = (peliculaActualizada) => {
-    const actualizadas = peliculas.map((peli) =>
-      peli.id === peliculaActualizada.id ? peliculaActualizada : peli
+    setPeliculas((prevPeliculas) =>
+      prevPeliculas.map((peli) =>
+        peli.id === peliculaActualizada.id ? peliculaActualizada : peli
+      )
     );
-    setPeliculas(actualizadas);
-    setPeliculaEnEdicion(null);
+    setPeliculaEnEdicion(null);  // Limpiar el estado de edición
   };
 
   return (
@@ -52,7 +61,7 @@ export const PeliculasProvider = ({ children }) => {
         toggleFavorito,
         peliculaEnEdicion,
         setPeliculaEnEdicion,
-        editarPelicula
+        editarPelicula,
       }}
     >
       {children}
