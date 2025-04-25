@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { getPeliculasFromStorage, savePeliculasToStorage } from "../utils/storage";
+import {
+  getPeliculasFromStorage,
+  savePeliculasToStorage,
+} from "../utils/storage";
 
 const usePeliculasStorage = () => {
-  const [peliculas, setPeliculas] = useState([]);
-
-  useEffect(() => {
-    const stored = getPeliculasFromStorage();
-    setPeliculas(stored);
-  }, []);
+  const [peliculas, setPeliculas] = useState(() => getPeliculasFromStorage());
 
   useEffect(() => {
     savePeliculasToStorage(peliculas);
@@ -19,16 +17,16 @@ const usePeliculasStorage = () => {
       id: Date.now(),
       favorita: false,
     };
-    setPeliculas([...peliculas, nueva]);
+    setPeliculas((prev) => [...prev, nueva]);
   };
 
   const eliminarPelicula = (id) => {
-    setPeliculas(peliculas.filter((p) => p.id !== id));
+    setPeliculas((prev) => prev.filter((p) => p.id !== id));
   };
 
   const toggleFavorita = (id) => {
-    setPeliculas(
-      peliculas.map((p) =>
+    setPeliculas((prev) =>
+      prev.map((p) =>
         p.id === id ? { ...p, favorita: !p.favorita } : p
       )
     );
